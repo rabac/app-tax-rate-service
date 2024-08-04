@@ -25,8 +25,17 @@ GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=
     });
 %}
 
-### Tax rates with municipality name and date.
+### Tax rates for 2024-12-25
 GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2024-12-25
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Tax rates for 2023-01-01
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2023-01-01
 
 > {%
     client.test("Request executed successfully", function () {

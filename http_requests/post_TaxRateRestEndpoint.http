@@ -1,0 +1,17 @@
+### Tax rates for 2024-01-01.
+POST http://{{host}}/api/v1/tax-rates
+Content-Type: application/json
+
+{
+    "municipalityName": "Copenhagen",
+    "validFromDate": "2024-01-01",
+    "validToDate": "2024-01-01",
+    "taxRate": "0.1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+

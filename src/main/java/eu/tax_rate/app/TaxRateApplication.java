@@ -1,4 +1,4 @@
-package eu.tax_rates.app;
+package eu.tax_rate.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableScheduling
 @EnableMongoAuditing
 @SpringBootApplication
-public class TaxRatesApplication {
+public class TaxRateApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TaxRatesApplication.class, args);
+        SpringApplication.run(TaxRateApplication.class, args);
     }
 }

@@ -1,4 +1,4 @@
-package eu.tax_rates.app.rest;
+package eu.tax_rate.app.rest.model;
 
 import lombok.Builder;
 import lombok.Data;
