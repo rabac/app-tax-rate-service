@@ -1,5 +1,5 @@
 ### Tax rates for 2024-01-01.
-GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2024-01-01
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&validForDate=2024-01-01
 
 > {%
     client.test("Request executed successfully", function () {
@@ -8,7 +8,7 @@ GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=
 %}
 
 ### Tax rates for 2024-05-10
-GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2024-05-10
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&validForDate=2024-05-10
 
 > {%
     client.test("Request executed successfully", function () {
@@ -17,7 +17,7 @@ GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=
 %}
 
 ### Tax rates for 2024-01-02
-GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2024-01-02
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&validForDate=2024-01-02
 
 > {%
     client.test("Request executed successfully", function () {
@@ -26,7 +26,7 @@ GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=
 %}
 
 ### Tax rates for 2024-12-25
-GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2024-12-25
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&validForDate=2024-12-25
 
 > {%
     client.test("Request executed successfully", function () {
@@ -35,7 +35,7 @@ GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=
 %}
 
 ### Tax rates for 2023-01-01
-GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&applicableDate=2023-01-01
+GET http://{{host}}/api/v1/tax-rates?municipalityName=Copenhagen&validForDate=2023-01-01
 
 > {%
     client.test("Request executed successfully", function () {

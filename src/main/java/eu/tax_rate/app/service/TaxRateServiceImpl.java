@@ -50,7 +50,8 @@ public class TaxRateServiceImpl implements TaxRateService {
                         .taxRate(taxRateToAdd.getTaxRate())
                         .priority(daysInBetween)
                         .build();
-        this.mongoTemplate.save(taxRateDocument);
+        final TaxRateDocument savedDocument = this.mongoTemplate.save(taxRateDocument);
+        log.info("Saved new tax rate '{}'", savedDocument);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class TaxRateServiceImpl implements TaxRateService {
             return Optional.empty();
         }
 
-        // TODO: can be improved by using filtering and sorting in mongo itself.
+        // TODO: For Phase 2 - can be improved by using filtering and sorting in mongo itself.
         final List<TaxRateDocument> taxRateDocuments = mongoTemplate.findAll(TaxRateDocument.class);
         return
                 taxRateDocuments.stream()
@@ -75,7 +76,7 @@ public class TaxRateServiceImpl implements TaxRateService {
                 ;
     }
 
-    private boolean isValid(CreateTaxRate taxRateToAdd) {
+    private boolean isValid(final CreateTaxRate taxRateToAdd) {
         // TODO add validity conditions.
         return true;
     }

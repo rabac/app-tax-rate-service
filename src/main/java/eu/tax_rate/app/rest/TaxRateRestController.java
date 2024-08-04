@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Log4j2
 @RestController
@@ -48,6 +50,7 @@ public class TaxRateRestController {
     public ResponseEntity<Void> registerTaxRate(
             @RequestBody @NonNull final CreateTaxRate createTaxRateModel
     ) {
+        log.info("Request received to add new tax rate.");
         taxRateServiceImpl.registerTaxRate(createTaxRateModel);
         return ResponseEntity.ok().build();
     }
@@ -56,7 +59,7 @@ public class TaxRateRestController {
      * API to get the applicable tax rate for the provided municipality name and the given date.
      *
      * @param municipalityName to search tax rate for.
-     * @param applicableDate   to search tax rate for.
+     * @param validForDate     to search tax rate for.
      * @return tax rate applicable if found else empty body.
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,25 +72,53 @@ public class TaxRateRestController {
     })
     public ResponseEntity<ApplicableTaxRate> getApplicableTaxRate(
             @RequestParam("municipalityName") final String municipalityName,
-            @RequestParam("applicableDate") final LocalDate applicableDate
+            @RequestParam("validForDate") final LocalDate validForDate
     ) {
         log.info(
                 "Received request for tax rate with municipality name '{}' and applicable date '{}'",
                 municipalityName,
-                applicableDate
+                validForDate
         );
 
         // TODO input validation and response based on it. Add Advice class for controller.
 
         final Optional<TaxRateDocument> applicableTax =
-                taxRateServiceImpl.getTaxRateDocument(municipalityName, applicableDate);
-        return applicableTax.map(
-                taxRateDocument -> ResponseEntity.ok(
-                        ApplicableTaxRate.builder()
-                                .municipalityName(taxRateDocument.getMunicipalityName())
-                                .applicableTaxRate(taxRateDocument.getTaxRate())
-                                .validForDate(applicableDate)
-                                .build()
-                )).orElseGet(() -> ResponseEntity.notFound().build());
+                taxRateServiceImpl.getTaxRateDocument(municipalityName, validForDate);
+        return applicableTax
+                .map(taxRateFound(validForDate))
+                .orElseGet(taxRateNotFound(municipalityName, validForDate))
+                ;
+    }
+
+    private static Function<TaxRateDocument, ResponseEntity<ApplicableTaxRate>> taxRateFound(final LocalDate validForDate) {
+        return taxRateDocument -> {
+            log.info(
+                    "Tax rate is '{}' for municipality '{}' and date '{}'.",
+                    taxRateDocument.getTaxRate(),
+                    taxRateDocument.getMunicipalityName(),
+                    validForDate
+            );
+            return ResponseEntity.ok(
+                    ApplicableTaxRate.builder()
+                            .municipalityName(taxRateDocument.getMunicipalityName())
+                            .taxRate(taxRateDocument.getTaxRate())
+                            .validForDate(validForDate)
+                            .build()
+            );
+        };
+    }
+
+    private static Supplier<ResponseEntity<ApplicableTaxRate>> taxRateNotFound(
+            final String municipalityName,
+            final LocalDate validForDate
+    ) {
+        return () -> {
+            log.info(
+                    "No tax rate found for municipality '{}' and date '{}'.",
+                    municipalityName,
+                    validForDate
+            );
+            return ResponseEntity.notFound().build();
+        };
     }
 }

@@ -10,5 +10,5 @@ import java.time.LocalDate;
 public class ApplicableTaxRate {
     private final String municipalityName;
     private final LocalDate validForDate;
-    private final String applicableTaxRate;
+    private final String taxRate;
 }
