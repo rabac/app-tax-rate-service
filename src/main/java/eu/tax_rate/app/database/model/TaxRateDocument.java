@@ -19,9 +19,18 @@ import java.time.LocalDate;
 @FieldNameConstants
 @Document(collection = "taxRate")
 public class TaxRateDocument {
+    /** Name of the municipality */
     String municipalityName;
+
+    /** Date the tax rate is valid from */
     LocalDate validFromDate;
+
+    /** Date the tax rate is valid until */
     LocalDate validToDate;
+
+    /** Tax rate that applies */
     String taxRate;
+
+    /** Priority of this tax rate configuration, to be used when multiple tax rates are found */
     int priority;
 }
