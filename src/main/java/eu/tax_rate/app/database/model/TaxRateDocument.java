@@ -32,5 +32,5 @@ public class TaxRateDocument {
     String taxRate;
 
     /** Priority of this tax rate configuration, to be used when multiple tax rates are found */
-    int priority;
+    long priority;
 }

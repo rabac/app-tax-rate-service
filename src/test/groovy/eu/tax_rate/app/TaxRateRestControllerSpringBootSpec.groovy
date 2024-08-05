@@ -20,7 +20,6 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-import static org.springframework.http.MediaType.APPLICATION_ATOM_XML
 import static org.springframework.http.MediaType.APPLICATION_JSON
 
 @SpringBootTest
@@ -87,6 +86,7 @@ class TaxRateRestControllerSpringBootSpec extends Specification {
         where: "combinations of parameters with all mandatory parameters"
             firstMandatoryParameter | firstParameterValue | secondMandatoryParameter | secondParameterValue
             "municipalityName"      | "Copenhagen"        | "validForDate"           | "2024-01-01"
+            "municipalityName"      | ""                  | "validForDate"           | "2024-01-01"
     }
 
     def "verify requests to add tax rate ending with success"() {

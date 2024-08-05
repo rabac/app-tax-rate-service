@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -34,14 +35,8 @@ public class TaxRateServiceImpl implements TaxRateService {
 
     @Override
     public void registerTaxRate(@NonNull final CreateTaxRate taxRateToAdd) {
-        final boolean validTaxRate = isValid(taxRateToAdd);
-        if (!validTaxRate) {
-            throw new IllegalArgumentException(
-                    String.format("Provided tax rate '%s' is not valid and cannot be added.", taxRateToAdd)
-            );
-        }
-
-        final int daysInBetween = taxRateToAdd.getValidFromDate().until(taxRateToAdd.getValidToDate()).getDays();
+        taxRateToAdd.validate();
+        final long daysInBetween = ChronoUnit.DAYS.between(taxRateToAdd.getValidFromDate(), taxRateToAdd.getValidToDate());
         final TaxRateDocument taxRateDocument =
                 TaxRateDocument.builder()
                         .municipalityName(taxRateToAdd.getMunicipalityName())
@@ -72,13 +67,8 @@ public class TaxRateServiceImpl implements TaxRateService {
                         .filter(document ->
                                 isEqualOrAfter(validForDate, document.getValidFromDate()) &&
                                         isEqualOrBefore(validForDate, document.getValidToDate())
-                        ).min(Comparator.comparingInt(TaxRateDocument::getPriority))
+                        ).min(Comparator.comparingLong(TaxRateDocument::getPriority))
                 ;
-    }
-
-    private boolean isValid(final CreateTaxRate taxRateToAdd) {
-        // TODO add validity conditions.
-        return true;
     }
 
     private static boolean isEqualOrAfter(LocalDate validForDate, LocalDate compareWithDate) {

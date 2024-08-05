@@ -79,9 +79,6 @@ public class TaxRateRestController {
                 municipalityName,
                 validForDate
         );
-
-        // TODO input validation and response based on it. Add Advice class for controller.
-
         final Optional<TaxRateDocument> applicableTax =
                 taxRateServiceImpl.getTaxRateDocument(municipalityName, validForDate);
         return applicableTax
@@ -90,6 +87,12 @@ public class TaxRateRestController {
                 ;
     }
 
+    /**
+     * Map the {@link TaxRateDocument} to the response entity.
+     *
+     * @param validForDate date for which the tax rate is found.
+     * @return response entity for the api request.
+     */
     private static Function<TaxRateDocument, ResponseEntity<ApplicableTaxRate>> taxRateFound(final LocalDate validForDate) {
         return taxRateDocument -> {
             log.info(
@@ -108,6 +111,13 @@ public class TaxRateRestController {
         };
     }
 
+    /**
+     * Create the response entity when no tax rate is found for the given municipality and date.
+     *
+     * @param municipalityName for which no tax rate is found.
+     * @param validForDate     for which no tax rate is found.
+     * @return response entity without content.
+     */
     private static Supplier<ResponseEntity<ApplicableTaxRate>> taxRateNotFound(
             final String municipalityName,
             final LocalDate validForDate
