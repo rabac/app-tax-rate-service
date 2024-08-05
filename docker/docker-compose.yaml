@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   mongo:
     image: mongo:4.4.13
@@ -7,6 +6,25 @@ services:
       - "27017:27017"
     volumes:
       - "mongodata:/data/db"
+    networks:
+      - localnet
+
+  app-tax-rate-service:
+    build:
+      context: tax-rate-service
+      dockerfile: docker-tax-rate-service
+    image: app-tax-rate-service
+    container_name: app-tax-rate-service
+    ports:
+      - "8080:8080"
+    networks:
+      - localnet
+    depends_on:
+      - mongo
+
+networks:
+  localnet:
+    attachable: true
 
 volumes:
   mongodata:
