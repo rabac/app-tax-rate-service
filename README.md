@@ -4,14 +4,22 @@ Application for storing and providing different tax levels for municipalities ba
 # OpenAPI contract
 The contract for the API that provides methods for integrating with the Tax Rate rest service can be found here: http://localhost:8080/swagger-ui/index.html
 
-# Running the application
-The requirement for running the application locally is a running MongoDB server. 
-MongoDB server can be started locally by running the following command in the 'docker' directory.
+# Building and running the application through Docker 
 
-``
+Pre-requisite is that Docker Desktop is installed on the machine.
+
+1. Build the jar file by running the following command in the project home directory.
+```
+mvn clean package -DskipTests
+```
+2. Build the docker image for the application by running the following commands
+```
+cd docker\tax-rate-service
+docker build --tag=app-tax-rate-service:latest --file docker-tax-rate-service ../..
+```
+3. Run docker compose through the following commands 
+```
 cd docker
 docker compose up -d
-``
-
-This will start MongoDB locally. 
-After this the Spring boot application can be started with the default profile and with this the rest service should be up and running.
+```
+4. Verify that the application is running by invoking a http get request from the file `get_TaxRateRestEndpoint.http`.
